@@ -1,0 +1,411 @@
+/* ============================================================
+   RESIDENT EVIL — STYLES  (re-styles.css)
+   Edit this file to change visual appearance.
+   Colors, fonts, layout — nothing in here affects game data.
+   ============================================================ */
+
+/* ---------- CSS Variables ---------- */
+:root {
+  --blood:      #b30000;
+  --dark-blood: #6b0000;
+  --ember:      #e84800;
+  --rust:       #8b2500;
+  --bone:       #d4c9a8;
+  --fog:        #c8bfa0;
+  --ash:        #8a8070;
+  --deep:       #0d0b08;
+  --dark:       #150f0a;
+  --mid:        #1e1510;
+  --panel:      #231a12;
+  --panel2:     #2a2018;
+  --border:     #3d2d1a;
+  --text:       #d4c9a8;
+  --muted:      #8a8070;
+}
+
+/* ---------- Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ---------- Base ---------- */
+body {
+  background: var(--deep);
+  color: var(--text);
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Scanline overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent, transparent 2px,
+    rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px
+  );
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* ---------- Header ---------- */
+header {
+  position: relative;
+  padding: 60px 24px 40px;
+  text-align: center;
+  background: linear-gradient(180deg, #0d0b08 0%, #1a0800 60%, #0d0b08 100%);
+  border-bottom: 2px solid var(--blood);
+  overflow: hidden;
+}
+header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(179,0,0,0.18) 0%, transparent 70%);
+}
+.umbrella-bg {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px; height: 300px;
+  opacity: 0.04;
+  font-size: 280px; line-height: 1;
+  color: var(--blood);
+  pointer-events: none; user-select: none;
+  font-family: 'Black Ops One', serif;
+}
+.header-eyebrow {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  color: var(--blood);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  position: relative;
+}
+h1 {
+  font-family: 'Black Ops One', serif;
+  font-size: clamp(36px, 8vw, 80px);
+  color: #fff;
+  text-shadow: 0 0 40px rgba(179,0,0,0.6), 0 2px 4px rgba(0,0,0,0.9);
+  letter-spacing: 0.04em;
+  position: relative;
+  line-height: 1;
+}
+h1 span { color: var(--blood); }
+.header-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 14px;
+  letter-spacing: 0.25em;
+  position: relative;
+}
+.bio-hazard {
+  display: inline-block;
+  color: var(--blood);
+  animation: pulse-red 3s ease-in-out infinite;
+}
+@keyframes pulse-red {
+  0%, 100% { text-shadow: 0 0 6px var(--blood); }
+  50%       { text-shadow: 0 0 18px var(--ember), 0 0 30px rgba(179,0,0,0.4); }
+}
+
+/* ---------- Nav Tabs ---------- */
+.tabs {
+  display: flex;
+  gap: 2px;
+  padding: 0 24px;
+  background: var(--dark);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  overflow-x: auto;
+}
+.tab-btn {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  padding: 14px 20px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+.tab-btn:hover  { color: var(--text); }
+.tab-btn.active { color: var(--blood); border-bottom-color: var(--blood); }
+
+/* ---------- Sections ---------- */
+.section {
+  display: none;
+  padding: 32px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  animation: fadeIn 0.3s ease;
+}
+.section.active { display: block; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.section-header {
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.section-header h2 {
+  font-family: 'Black Ops One', serif;
+  font-size: 22px;
+  color: #fff;
+  letter-spacing: 0.05em;
+}
+.section-header p {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--muted);
+  font-family: 'Share Tech Mono', monospace;
+  letter-spacing: 0.1em;
+}
+
+/* ---------- Legend ---------- */
+.legend {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  padding: 12px 16px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+}
+.legend-item { display: flex; align-items: center; gap: 8px; color: var(--muted); }
+.legend-dot  { width: 12px; height: 12px; border-radius: 2px; }
+.legend-dot.mainline { background: var(--blood); }
+.legend-dot.remake   { background: #b8860b; }
+.legend-dot.spinoff  { background: #3a8b3a; }
+
+/* ---------- Era Dividers ---------- */
+.era-label {
+  font-family: 'Black Ops One', serif;
+  font-size: 11px;
+  letter-spacing: 0.35em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin: 28px 0 12px;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.era-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ---------- Game Cards ---------- */
+.games-grid { display: flex; flex-direction: column; gap: 10px; }
+
+.game-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--blood);
+  border-radius: 4px;
+  padding: 16px 20px;
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  gap: 16px;
+  align-items: start;
+  transition: all 0.2s;
+}
+.game-card:hover {
+  background: var(--panel2);
+  border-left-color: var(--ember);
+  box-shadow: -3px 0 12px rgba(232,72,0,0.2);
+  transform: translateX(3px);
+}
+
+/* Type variants */
+.game-card.remake   { border-left-color: #b8860b; }
+.game-card.remake:hover  { border-left-color: #ffd700; box-shadow: -3px 0 12px rgba(255,215,0,0.15); }
+.game-card.spin-off { border-left-color: #2a6b2a; }
+.game-card.spin-off:hover{ border-left-color: #44cc44; box-shadow: -3px 0 12px rgba(68,204,68,0.15); }
+
+/* Number circle */
+.card-num {
+  font-family: 'Black Ops One', serif;
+  font-size: 22px;
+  color: var(--blood);
+  line-height: 1;
+  text-align: center;
+  padding-top: 2px;
+}
+.game-card.remake   .card-num { color: #b8860b; }
+.game-card.spin-off .card-num { color: #3a8b3a; font-size: 14px; padding-top: 5px; }
+
+/* Card body */
+.card-body { min-width: 0; }
+.card-title {
+  font-family: 'Black Ops One', serif;
+  font-size: 15px;
+  color: #fff;
+  letter-spacing: 0.03em;
+  margin-bottom: 5px;
+}
+.card-meta {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--blood);
+  letter-spacing: 0.1em;
+  margin-bottom: 7px;
+}
+.game-card.remake   .card-meta { color: #b8860b; }
+.game-card.spin-off .card-meta { color: #3a8b3a; }
+
+.card-desc {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* Platforms */
+.card-platforms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 10px;
+}
+.platform-tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9.5px;
+  padding: 3px 7px;
+  background: rgba(179,0,0,0.12);
+  border: 1px solid rgba(179,0,0,0.25);
+  color: var(--fog);
+  border-radius: 2px;
+  letter-spacing: 0.05em;
+}
+.game-card.remake   .platform-tag { background: rgba(184,134,11,0.1);  border-color: rgba(184,134,11,0.25); }
+.game-card.spin-off .platform-tag { background: rgba(42,107,42,0.12);  border-color: rgba(42,107,42,0.3); }
+
+/* Connects-to line */
+.connects-to {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--blood);
+  letter-spacing: 0.08em;
+}
+.connects-to::before { content: '▶'; font-size: 8px; }
+
+/* Year label */
+.card-year {
+  font-family: 'Black Ops One', serif;
+  font-size: 26px;
+  color: var(--border);
+  text-align: right;
+  white-space: nowrap;
+  line-height: 1;
+  padding-top: 2px;
+}
+
+/* ---------- Connections Tab ---------- */
+.story-arc {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 12px;
+}
+.story-arc.highlight {
+  border-color: var(--blood);
+  background: rgba(179,0,0,0.05);
+}
+
+.arc-title {
+  font-family: 'Black Ops One', serif;
+  font-size: 14px;
+  color: var(--blood);
+  letter-spacing: 0.08em;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.arc-title::before { content: ''; width: 20px; height: 2px; background: var(--blood); }
+.story-arc.highlight .arc-title { color: var(--ember); }
+
+.arc-chain { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.arc-game {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  padding: 5px 10px;
+  background: rgba(179,0,0,0.1);
+  border: 1px solid rgba(179,0,0,0.3);
+  color: var(--bone);
+  border-radius: 3px;
+}
+.arc-arrow { color: var(--blood); font-size: 14px; opacity: 0.7; }
+
+.arc-note {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* ---------- Tables ---------- */
+.virus-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  margin-top: 12px;
+}
+.virus-table th {
+  font-family: 'Black Ops One', serif;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--blood);
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--blood);
+  background: rgba(179,0,0,0.07);
+}
+.virus-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: top;
+}
+.virus-table tr:hover td { background: var(--panel2); }
+.virus-table td:first-child {
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--ember);
+  font-size: 11px;
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar       { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: var(--blood); border-radius: 3px; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+  .game-card { grid-template-columns: 36px 1fr; }
+  .card-year { display: none; }
+}

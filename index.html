@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resident Evil — Complete Game Archive</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="re-styles.css">
+</head>
+<body>
+
+<header>
+  <div class="umbrella-bg">☂</div>
+  <div class="header-eyebrow">☣ UMBRELLA CORPORATION CLASSIFIED ARCHIVE ☣</div>
+  <h1>RESIDENT <span>EVIL</span></h1>
+  <div class="header-sub"><span class="bio-hazard">⬡ BIOHAZARD</span> &nbsp;·&nbsp; COMPLETE SERIES GUIDE &nbsp;·&nbsp; 1996–2026</div>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('release', this)">Release Order</button>
+  <button class="tab-btn" onclick="switchTab('chronological', this)">Chronological</button>
+  <button class="tab-btn" onclick="switchTab('connections', this)">Story Connections</button>
+</div>
+
+<!-- ===== RELEASE ORDER ===== -->
+<div id="tab-release" class="section active">
+  <div class="section-header">
+    <h2>Release Order</h2>
+    <p>All mainline + key spin-off games in order of publication · remakes replace originals</p>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot mainline"></div> Mainline</div>
+    <div class="legend-item"><div class="legend-dot remake"></div> Remake</div>
+    <div class="legend-item"><div class="legend-dot spinoff"></div> Key Spin-off</div>
+  </div>
+  <div id="release-list" class="games-grid"></div>
+</div>
+
+<!-- ===== CHRONOLOGICAL ===== -->
+<div id="tab-chronological" class="section">
+  <div class="section-header">
+    <h2>Chronological Order</h2>
+    <p>In-universe story timeline · play this way for maximum lore immersion</p>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot mainline"></div> Mainline</div>
+    <div class="legend-item"><div class="legend-dot remake"></div> Remake</div>
+    <div class="legend-item"><div class="legend-dot spinoff"></div> Key Spin-off</div>
+  </div>
+  <div id="chron-list" class="games-grid"></div>
+</div>
+
+<!-- ===== CONNECTIONS ===== -->
+<div id="tab-connections" class="section">
+  <div class="section-header">
+    <h2>Story Connections</h2>
+    <p>How characters, viruses, and events link across the series</p>
+  </div>
+  <div id="connections-list"></div>
+</div>
+
+<!-- ================================================================
+     DATA + RENDERER
+     All content comes from re-data.js — edit that file to update.
+================================================================ -->
+<script src="re-data.js"></script>
+<script>
+
+// ---------- Tab switcher ----------
+function switchTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ---------- Build a game card ----------
+function buildCard(game) {
+  const typeClass = game.type === 'spin-off' ? 'spin-off' : game.type; // keep hyphen for CSS
+  const platformTags = game.platforms
+    .map(p => `<span class="platform-tag">${p}</span>`)
+    .join('');
+  const connectsHTML = game.connects
+    ? `<div class="connects-to">${game.connects}</div>`
+    : '';
+  return `
+    <div class="game-card ${typeClass}">
+      <div class="card-num">${game.num}</div>
+      <div class="card-body">
+        <div class="card-title">${game.title}</div>
+        <div class="card-meta">${game.metaLine}</div>
+        <div class="card-desc">${game.desc}</div>
+        <div class="card-platforms">${platformTags}</div>
+        ${connectsHTML}
+      </div>
+      <div class="card-year">${game.year}</div>
+    </div>`;
+}
+
+// ---------- Render a games list with era labels ----------
+function renderGamesList(containerId, games, eraLabels) {
+  const container = document.getElementById(containerId);
+  let html = '';
+  games.forEach((game, i) => {
+    // Insert era label BEFORE this index if defined
+    const era = eraLabels.find(e => e.afterIndex === i - 1);
+    if (era) html += `<div class="era-label">${era.label}</div>`;
+    html += buildCard(game);
+  });
+  container.innerHTML = html;
+}
+
+// ---------- Render connections ----------
+function renderConnections() {
+  const container = document.getElementById('connections-list');
+  let html = '';
+
+  // Story arcs
+  CONNECTION_ARCS.forEach(arc => {
+    const chainHTML = arc.chain.map(item => {
+      if (item === '→' || item === '↕') return `<span class="arc-arrow">${item}</span>`;
+      return `<span class="arc-game">${item}</span>`;
+    }).join('');
+
+    html += `
+      <div class="story-arc">
+        <div class="arc-title">${arc.title}</div>
+        <div class="arc-chain">${chainHTML}</div>
+        <div class="arc-note">${arc.note}</div>
+      </div>`;
+  });
+
+  // Characters table
+  const charRows = CHARACTERS.map(c =>
+    `<tr><td>${c.name}</td><td>${c.games}</td><td>${c.role}</td></tr>`
+  ).join('');
+
+  html += `
+    <div class="story-arc highlight">
+      <div class="arc-title">Key Recurring Characters</div>
+      <table class="virus-table">
+        <tr><th>Character</th><th>Appears In</th><th>Role</th></tr>
+        ${charRows}
+      </table>
+    </div>`;
+
+  // Virus table
+  const virusRows = VIRUSES.map(v =>
+    `<tr><td>${v.name}</td><td>${v.game}</td><td>${v.desc}</td></tr>`
+  ).join('');
+
+  html += `
+    <div class="story-arc">
+      <div class="arc-title">Virus / Bio-Weapon Glossary</div>
+      <table class="virus-table">
+        <tr><th>Virus / Agent</th><th>Introduced</th><th>Effect &amp; Notes</th></tr>
+        ${virusRows}
+      </table>
+    </div>`;
+
+  container.innerHTML = html;
+}
+
+// ---------- Init ----------
+renderGamesList('release-list',   RELEASE_GAMES, RELEASE_ERA_LABELS);
+renderGamesList('chron-list',     CHRON_GAMES,   CHRON_ERA_LABELS);
+renderConnections();
+
+</script>
+</body>
+</html>
