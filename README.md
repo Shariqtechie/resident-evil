@@ -14,7 +14,7 @@
 **A beautifully designed, interactive reference guide to every Resident Evil game.**  
 Release order · Chronological order · Story connections · Platforms · Lore
 
-[![Live Site](https://img.shields.io/badge/LIVE%20SITE-Visit%20Archive-b30000?style=for-the-badge&logo=github)](https://shariqtechie.github.io/resident-evil-archive)
+[![Live Site](https://img.shields.io/badge/LIVE%20SITE-Visit%20Archive-b30000?style=for-the-badge&logo=github)](https://shariqtechie.github.io/resident-evil)
 [![Maintained](https://img.shields.io/badge/MAINTAINED-By%20shariqtechie-1a1a1a?style=for-the-badge)](https://github.com/shariqtechie)
 [![Games Covered](https://img.shields.io/badge/GAMES%20COVERED-14%20entries-8b2500?style=for-the-badge)](#)
 [![Last Updated](https://img.shields.io/badge/LAST%20UPDATED-2026-3d2d1a?style=for-the-badge)](#)
@@ -46,37 +46,11 @@ Five story arcs showing how every game connects to the others, a recurring chara
 
 ---
 
-## Color Guide
-
-Cards are color-coded so you can instantly identify what you're looking at:
-
-| Color | Meaning |
-|-------|---------|
-| 🔴 Red border | Mainline numbered entry |
-| 🟡 Gold border | Remake (replaces the original) |
-| 🟢 Green border | Key spin-off |
-
----
-
 ## How to Use It
 
 Just open the site. No account, no install, no setup. Everything runs in the browser.
 
 If you're new to the series and want to play in lore order, go to the **Chronological** tab and start from entry ①. If you want to see the series as it was experienced by fans over the decades, use **Release Order**.
-
----
-
-## The Files
-
-The project is intentionally split into three files so each has one job:
-
-```
-index.html      ← Page structure and renderer. Reads from the other two files.
-re-data.js      ← All game content: titles, descriptions, platforms, story arcs.
-re-styles.css   ← All visual styling: colors, fonts, layout, animations.
-```
-
-This means if a new game comes out, only `re-data.js` needs to be touched. The visuals and structure stay the same.
 
 ---
 
@@ -101,49 +75,11 @@ This means if a new game comes out, only `re-data.js` needs to be touched. The v
 
 ---
 
-## How to Run It Locally
-
-No build step. No dependencies. No npm install. Just open a file.
-
-```bash
-git clone https://github.com/shariqtechie/resident-evil-archive.git
-cd resident-evil-archive
-```
-
-Then open `index.html` in any modern browser.  
-That's it.
-
-> **Note:** Because `index.html` loads `re-data.js` and `re-styles.css` as separate files, opening `index.html` directly via `file://` may be blocked by your browser's CORS policy. If nothing loads, either use a local server (`python -m http.server`) or just use the [live site](https://shariqtechie.github.io/resident-evil-archive).
-
----
-
-## How to Deploy to GitHub Pages (from scratch)
-
-1. Create a new repository on GitHub named `resident-evil-archive`
-2. Upload the three files: `index.html`, `re-data.js`, `re-styles.css`
-3. Go to **Settings → Pages**
-4. Under *Source*, select **Deploy from a branch**
-5. Choose **main** branch, **/ (root)** folder
-6. Click **Save**
-
-Your site will be live at:  
-`https://shariqtechie.github.io/resident-evil-archive`
-
-It usually takes 1–2 minutes to go live the first time.
-
----
-
 ## Updates
 
 This archive is maintained by [@shariqtechie](https://github.com/shariqtechie).
 
 It will be updated as new games are announced, released, or when platform availability changes. The file structure is designed to make updates as simple as possible — new entries are added to `re-data.js` in a few lines with no changes needed anywhere else.
-
----
-
-## Tech
-
-Pure HTML, CSS, and vanilla JavaScript. No frameworks. No build tools. No external dependencies except two Google Fonts loaded over CDN. The entire archive loads in under a second.
 
 ---
 
